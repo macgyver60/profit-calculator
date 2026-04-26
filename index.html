@@ -173,6 +173,9 @@
             color: white;
             margin: 15px 0;
         }
+        .result-card.loss {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
         .result-label {
             font-size: 13px;
             opacity: 0.9;
@@ -262,25 +265,25 @@
 
                 <div class="slider-group">
                     <div class="input-label">
-                        <span>Profit Share %</span>
+                        <span>Revenue Share %</span>
                     </div>
                     <div class="slider-container">
-                        <input type="range" id="revenueSlider" min="0" max="100" value="8" step="0.1">
-                        <input type="number" id="revenueInput" class="percentage-input" value="8" min="0" max="100" step="0.1">
+                        <input type="range" id="revenueSlider" min="0" max="100" value="4.5" step="0.1">
+                        <input type="number" id="revenueInput" class="percentage-input" value="4.5" min="0" max="100" step="0.1">
                     </div>
                 </div>
 
-                <div class="result-card">
+                <div class="result-card" id="resultCard">
                     <div class="result-label">Your Net Profit</div>
-                    <div class="result-value" id="result">$80K</div>
+                    <div class="result-value" id="result">-$240K</div>
                     <div class="breakdown">
                         <div class="breakdown-row">
-                            <span>Total Profit:</span>
-                            <span id="totalProfit">$1M</span>
+                            <span>Your Revenue:</span>
+                            <span id="yourRevenue">$180K</span>
                         </div>
                         <div class="breakdown-row">
-                            <span>Your Share:</span>
-                            <span id="profitProfit">$80K</span>
+                            <span>Your Overhead:</span>
+                            <span id="yourOverhead">$420K</span>
                         </div>
                     </div>
                 </div>
@@ -299,6 +302,7 @@
         const revenueSlider = document.getElementById('revenueSlider');
         const overheadPercentageInput = document.getElementById('overheadInput');
         const revenuePercentageInput = document.getElementById('revenueInput');
+        const resultCard = document.getElementById('resultCard');
 
         function formatCurrency(value) {
             if (value >= 1000000) {
@@ -315,18 +319,28 @@
             const overheadShare = parseFloat(overheadSlider.value) || 0;
             const revenueShare = parseFloat(revenueSlider.value) || 0;
             
-            // Calculate total profit (Revenue - Overhead)
-            const totalProfit = revenue - overhead;
+            // Your share of revenue
+            const yourRevenue = revenue * (revenueShare / 100);
             
-            // Your net profit is only your share of the profit after overhead is subtracted
-            const yourNetProfit = totalProfit * (revenueShare / 100);
+            // Your share of overhead (cost)
+            const yourOverhead = overhead * (overheadShare / 100);
+            
+            // Your net profit = your revenue - your overhead
+            const yourNetProfit = yourRevenue - yourOverhead;
             
             document.getElementById('result').textContent = formatCurrency(yourNetProfit);
-            document.getElementById('totalProfit').textContent = formatCurrency(totalProfit);
-            document.getElementById('profitProfit').textContent = formatCurrency(yourNetProfit);
+            document.getElementById('yourRevenue').textContent = formatCurrency(yourRevenue);
+            document.getElementById('yourOverhead').textContent = formatCurrency(yourOverhead);
             
             document.getElementById('overheadDisplay').textContent = formatCurrency(overhead);
             document.getElementById('revenueDisplay').textContent = formatCurrency(revenue);
+            
+            // Change card color if loss
+            if (yourNetProfit < 0) {
+                resultCard.classList.add('loss');
+            } else {
+                resultCard.classList.remove('loss');
+            }
         }
 
         // Overhead Share - sync slider and input
