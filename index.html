@@ -231,7 +231,7 @@
 
                 <div class="slider-group">
                     <div class="input-label">
-                        <span>Overhead Share</span>
+                        <span>Overhead Share %</span>
                         <span class="input-label-value" id="overheadShareDisplay">14%</span>
                     </div>
                     <input type="range" id="overheadSlider" min="0" max="100" value="14" step="0.1">
@@ -239,22 +239,22 @@
 
                 <div class="slider-group">
                     <div class="input-label">
-                        <span>Profit Share</span>
+                        <span>Profit Share %</span>
                         <span class="input-label-value" id="revenueShareDisplay">8%</span>
                     </div>
                     <input type="range" id="revenueSlider" min="0" max="100" value="8" step="0.1">
                 </div>
 
                 <div class="result-card">
-                    <div class="result-label">Your Total Share</div>
-                    <div class="result-value" id="result">$428K</div>
+                    <div class="result-label">Your Net Profit</div>
+                    <div class="result-value" id="result">$8K</div>
                     <div class="breakdown">
                         <div class="breakdown-row">
-                            <span>From Overhead:</span>
-                            <span id="overheadProfit">$420K</span>
+                            <span>Total Profit:</span>
+                            <span id="totalProfit">$1M</span>
                         </div>
                         <div class="breakdown-row">
-                            <span>From Profit:</span>
+                            <span>Your Share:</span>
                             <span id="profitProfit">$8K</span>
                         </div>
                     </div>
@@ -288,14 +288,15 @@
             const overheadShare = parseFloat(overheadSlider.value) || 0;
             const revenueShare = parseFloat(revenueSlider.value) || 0;
             
-            const profit = revenue - overhead;
-            const overheadProfit = overhead * (overheadShare / 100);
-            const profitContribution = profit * (revenueShare / 100);
-            const totalProfit = overheadProfit + profitContribution;
+            // Calculate total profit (Revenue - Overhead)
+            const totalProfit = revenue - overhead;
             
-            document.getElementById('result').textContent = formatCurrency(totalProfit);
-            document.getElementById('overheadProfit').textContent = formatCurrency(overheadProfit);
-            document.getElementById('profitProfit').textContent = formatCurrency(profitContribution);
+            // Your net profit is only your share of the profit after overhead is subtracted
+            const yourNetProfit = totalProfit * (revenueShare / 100);
+            
+            document.getElementById('result').textContent = formatCurrency(yourNetProfit);
+            document.getElementById('totalProfit').textContent = formatCurrency(totalProfit);
+            document.getElementById('profitProfit').textContent = formatCurrency(yourNetProfit);
             
             document.getElementById('overheadDisplay').textContent = formatCurrency(overhead);
             document.getElementById('revenueDisplay').textContent = formatCurrency(revenue);
