@@ -103,11 +103,11 @@
         }
         .input-with-toggle {
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            align-items: center;
         }
         input[type="number"] {
-            flex: 1;
+            width: 100%;
             padding: 12px;
             border: 1px solid #e5e5e7;
             border-radius: 8px;
@@ -119,8 +119,13 @@
             background: white;
             border-color: #667eea;
         }
+        .toggle-buttons {
+            display: flex;
+            gap: 8px;
+        }
         .toggle-button {
-            padding: 8px 12px;
+            flex: 1;
+            padding: 10px 12px;
             background: #f5f5f7;
             border: 1px solid #e5e5e7;
             border-radius: 6px;
@@ -276,8 +281,10 @@
                     </div>
                     <div class="input-with-toggle">
                         <input type="number" id="revenue" value="4000000" placeholder="Enter revenue">
-                        <button class="toggle-button active" id="annualBtn" onclick="togglePeriod('annual')">Annual</button>
-                        <button class="toggle-button" id="monthlyBtn" onclick="togglePeriod('monthly')">Monthly</button>
+                        <div class="toggle-buttons">
+                            <button class="toggle-button active" id="annualBtn" onclick="togglePeriod('annual')">Annual</button>
+                            <button class="toggle-button" id="monthlyBtn" onclick="togglePeriod('monthly')">Monthly</button>
+                        </div>
                     </div>
                 </div>
 
